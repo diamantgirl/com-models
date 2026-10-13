@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bank Reconciliation Statement · Commerce Models</title>
+    <link rel="stylesheet" href="../../assets/styles/base.css" />
+    <link rel="stylesheet" href="../../assets/styles/brs.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="../../index.html">
+          <span class="brand-mark"></span>
+          Commerce Models
+        </a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="page-title">Bank Reconciliation Statement</span>
+        <span class="spacer"></span>
+        <button id="restartBtn" class="btn danger small" type="button">
+          Restart session
+        </button>
+      </div>
+    </header>
+
+    <main class="wrap brs">
+      <section class="base-bar" aria-label="Reconciliation base">
+        <span class="base-label">Base</span>
+        <div class="segmented" role="group" aria-label="Reconciliation base">
+          <button class="seg active" type="button" aria-pressed="true">
+            Balance as per Cash Book <span class="arrow">&rarr;</span> Pass Book
+          </button>
+          <button
+            class="seg"
+            type="button"
+            aria-pressed="false"
+            disabled
+            title="Coming soon"
+          >
+            Pass Book <span class="arrow">&rarr;</span> Cash Book
+            <span class="lock">coming soon</span>
+          </button>
+        </div>
+      </section>
+
+      <div class="panel-grid">
+        <!-- Visualization -->
+        <section class="panel viz-panel" aria-labelledby="vizHeading">
+          <div class="panel-head">
+            <h2 id="vizHeading">Balances</h2>
+            <span class="hint">Each item moves one book.</span>
+          </div>
+
+          <div class="bars">
+            <div class="bars-stage" id="barsStage">
+              <div class="bar-col">
+                <div class="bar cash" id="barCash">
+                  <span class="bar-value" id="cashValue">₹0</span>
+                </div>
+              </div>
+              <div class="bar-col">
+                <div class="bar pass" id="barPass">
+                  <span class="bar-value" id="passValue">₹0</span>
+                </div>
+              </div>
+              <div class="difference" id="difference" hidden>
+                <span class="difference-label" id="differenceLabel"
+                  >Difference ₹0</span
+                >
+              </div>
+            </div>
+            <div class="bars-labels">
+              <div class="bar-label-col">
+                <span class="bar-name">Cash Book</span>
+                <span class="bar-sub">as recorded by you</span>
+              </div>
+              <div class="bar-label-col">
+                <span class="bar-name">Pass Book</span>
+                <span class="bar-sub">as recorded by the bank</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- BRS statement -->
+        <section class="panel statement-panel" aria-labelledby="stmtHeading">
+          <div class="panel-head">
+            <h2 id="stmtHeading">Bank Reconciliation Statement</h2>
+            <span class="hint">Cash Book &rarr; Pass Book</span>
+          </div>
+          <div class="table-scroll">
+            <table class="brs-table">
+              <thead>
+                <tr>
+                  <th>Particulars</th>
+                  <th class="num">Add (+)</th>
+                  <th class="num">Less (&minus;)</th>
+                  <th class="num">Amount</th>
+                </tr>
+              </thead>
+              <tbody id="statementBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- Explanation -->
+      <section class="callout" id="callout" aria-live="polite">
+        <p>
+          Enter an opening balance to start, then apply items below. Each item
+          moves one book, and the BRS explains the gap.
+        </p>
+      </section>
+
+      <!-- Templates -->
+      <section class="panel palette-panel" aria-labelledby="paletteHeading">
+        <div class="panel-head">
+          <h2 id="paletteHeading">Reconciling items</h2>
+          <span class="hint">Set an amount and apply.</span>
+        </div>
+        <div class="palette" id="palette"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        Balance as per Cash Book + (Add &minus; Less) = Balance as per Pass Book.
+        Runs entirely in your browser.
+      </div>
+    </footer>
+
+    <!-- Session setup overlay -->
+    <div class="overlay" id="setup" hidden>
+      <div
+        class="overlay-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="setupTitle"
+      >
+        <h2 id="setupTitle">Start a session</h2>
+        <p class="muted">
+          Enter the opening balance. Both the Cash Book and the Pass Book start
+          at this same figure.
+        </p>
+        <form id="setupForm">
+          <label class="field">
+            <span>Opening balance (₹)</span>
+            <input
+              id="openingInput"
+              type="number"
+              min="0"
+              step="1"
+              inputmode="numeric"
+              placeholder="50000"
+              autocomplete="off"
+              required
+            />
+          </label>
+          <p class="error" id="setupError" hidden></p>
+          <button class="btn primary" type="submit">Start</button>
+        </form>
+      </div>
+    </div>
+
+    <script type="module" src="./brs.js"></script>
+  </body>
+</html>
